@@ -1,0 +1,958 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.3.1, mkdocs-material-8.4.1">
+    
+    
+      
+        <title>Using Custom Resource Definitions with cdk8s - Write your Kubernetes Infrastructure as Go code</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.69437709.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.cbb835fc.min.css">
+        
+      
+      
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="none" data-md-color-accent="none">
+  
+    
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#before-you-begin" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Write your Kubernetes Infrastructure as Go code" class="md-header__button md-logo" aria-label="Write your Kubernetes Infrastructure as Go code" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Write your Kubernetes Infrastructure as Go code
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Using Custom Resource Definitions with cdk8s
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Write your Kubernetes Infrastructure as Go code" class="md-nav__button md-logo" aria-label="Write your Kubernetes Infrastructure as Go code" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    Write your Kubernetes Infrastructure as Go code
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        Welcome!
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2">
+          Part 1: Getting started with cdk8s
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Part 1: Getting started with cdk8s" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          Part 1: Getting started with cdk8s
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Part%201%3A%20Getting%20started%20with%20cdk8s/" class="md-nav__link">
+        Getting started with cdk8s
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3">
+          Part 2: cdk8s plus in action
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Part 2: cdk8s plus in action" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          Part 2: cdk8s plus in action
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Part%202%3A%20cdk8s-plus%20in%20action/" class="md-nav__link">
+        cdk8s-plus in action!
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4">
+          Part 3: Using Custom Resource Definitions with cdk8s
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Part 3: Using Custom Resource Definitions with cdk8s" data-md-level="1">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          Part 3: Using Custom Resource Definitions with cdk8s
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Using Custom Resource Definitions with cdk8s
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Using Custom Resource Definitions with cdk8s
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#before-you-begin" class="md-nav__link">
+    Before you begin...
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#alright-lets-get-started" class="md-nav__link">
+    Alright, lets get started...
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#setup-kafka-on-kubernetes-using-strimzi-cdk8s-and-go" class="md-nav__link">
+    Setup Kafka on Kubernetes using Strimzi, cdk8s and Go
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#time-to-wrap-up" class="md-nav__link">
+    Time to wrap up...
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5" type="checkbox" id="__nav_5" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_5">
+          Part 4: Extend cdk8s with custom Constructs
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Part 4: Extend cdk8s with custom Constructs" data-md-level="1">
+        <label class="md-nav__title" for="__nav_5">
+          <span class="md-nav__icon md-icon"></span>
+          Part 4: Extend cdk8s with custom Constructs
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Part%204%3A%20Extend%20cdk8s%20with%20custom%20Constructs/" class="md-nav__link">
+        Extend cdk8s with custom Constructs
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6" type="checkbox" id="__nav_6" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6">
+          Part 5: Coming soon
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Part 5: Coming soon" data-md-level="1">
+        <label class="md-nav__title" for="__nav_6">
+          <span class="md-nav__icon md-icon"></span>
+          Part 5: Coming soon
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Part%205%3A%20Coming%20soon/" class="md-nav__link">
+        coming soon
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_7" type="checkbox" id="__nav_7" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_7">
+          Part 6: Coming soon
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Part 6: Coming soon" data-md-level="1">
+        <label class="md-nav__title" for="__nav_7">
+          <span class="md-nav__icon md-icon"></span>
+          Part 6: Coming soon
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Part%206%3A%20Coming%20soon/" class="md-nav__link">
+        coming soon
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#before-you-begin" class="md-nav__link">
+    Before you begin...
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#alright-lets-get-started" class="md-nav__link">
+    Alright, lets get started...
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#setup-kafka-on-kubernetes-using-strimzi-cdk8s-and-go" class="md-nav__link">
+    Setup Kafka on Kubernetes using Strimzi, cdk8s and Go
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#time-to-wrap-up" class="md-nav__link">
+    Time to wrap up...
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+
+
+  <h1>Using Custom Resource Definitions with cdk8s</h1>
+
+<p><a href="https://cdk8s.io/docs/latest/">cdk8s</a> (Cloud Development Kit for Kubernetes) is an an open-source framework (part of CNCF) using which you can define your Kubernetes applications with regular programming languages (instead of <code>yaml</code>). One of the previous chapter covered the getting started experience and using <code>cdk8s-plus</code> library to further improve upon the core <code>cdk8s</code> library features. We are going to continue and push <code>cdk8s</code> even further. 
+This chapter  will demonstrate how you can use <a href="https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/#customresourcedefinitions">Kubernetes Custom Resource Definitions</a> with <code>cdk8s</code>. We will start off with a simple <code>Nginx</code> example and then you will use the combination of Strimzi project CRDs along with Go and <code>cdk8s</code> to define and deploy a Kafka cluster on Kubernetes!</p>
+<blockquote>
+<p>I am assuming that you've have some knowledge of Kubernetes Custom Resource Definitions and have probably even used a few in the form of <a href="https://kubernetes.io/docs/concepts/extend-kubernetes/operator/">Operators</a>. If not, that's ok! The Kubernetes documentation covers it quite well. You can always refer to it, come back here and follow along!</p>
+</blockquote>
+<p><code>cdk8s</code> lets you use Kubernetes API objects directly in your code, without having to import individual Go client packages, all thanks to <code>cdk8s import</code>. (also mentioned in the <em>"Wait, what about the Kubernetes API dependencies??"</em> section the previous chapter. But you can also use it for Custom Resource Definitions! Let's see this in action.</p>
+<h3 id="before-you-begin">Before you begin...</h3>
+<p>Make sure you have <code>Go</code> (<a href="https://go.dev/dl/">v1.16</a> or above) and <a href="https://github.com/cdk8s-team/cdk8s-cli">cdk8s CLI</a> installed. Also, you need to have access to a Kubernetes cluster. For learning and experimentation I would recommend using a single-node cluster running locally - such as <a href="https://minikube.sigs.k8s.io/docs/start/">minikube</a>, <a href="https://kind.sigs.k8s.io/docs/user/quick-start/#installation">kind</a>, etc.</p>
+<blockquote>
+<p>I generally use <code>minikube</code>, so setting up a cluster is as simple as <code>minikube start</code></p>
+</blockquote>
+<p><strong>To install cdk8s CLI</strong></p>
+<p>You can choose from the below options:</p>
+<pre><code class="language-bash">#homebrew
+brew install cdk8s
+
+#npm
+npm install -g cdk8s-cli
+
+#yarn
+yarn global add cdk8s-cli
+</code></pre>
+<hr />
+<h3 id="alright-lets-get-started">Alright, lets get started...</h3>
+<blockquote>
+<p>Although this chapter will provide step-by-step instructions, you can always refer to the complete <a href="https://github.com/abhirockzz/cdk8s-for-go-developers/tree/master/part3-crd">code on Github</a></p>
+</blockquote>
+<p><code>cdk8s</code> makes it really easy for you get started and bootstrap your application. You don't need to guess and figure out how to structure your project, setup dependencies etc. since the <code>cdk8s init</code> command does it for you!</p>
+<pre><code class="language-bash">cdk8s init go-app
+
+#output
+....
+
+ Your cdk8s Go project is ready!
+
+   cat help      Prints this message  
+   cdk8s synth   Synthesize k8s manifests to dist/
+   cdk8s import  Imports k8s API objects to &quot;imports/k8s&quot;
+
+  Deploy:
+   kubectl apply -f dist/
+</code></pre>
+<p>Update the generate <code>go.mod</code> file, and replace it with the following - this is to make things simpler for you. </p>
+<blockquote>
+<p>Feel free to use the latest version of the modules if needed.</p>
+</blockquote>
+<pre><code class="language-go">module cdk8s-crd
+
+go 1.16
+
+require (
+    github.com/aws/constructs-go/constructs/v10 v10.1.42
+    github.com/aws/jsii-runtime-go v1.61.0
+    github.com/cdk8s-team/cdk8s-core-go/cdk8s/v2 v2.3.34
+)
+</code></pre>
+<p><strong>To start with, let's work with a really (really!) simple Custom Resource Definition</strong></p>
+<p>I am going to use a sample CRD from the <a href="https://github.com/kubernetes/sample-controller">Kubernetes example</a>. To be honest, it doesn't really do anything. But, since we're just getting started, this should suffice!</p>
+<p>First, install/register the <code>CRD</code> resource itself:</p>
+<pre><code>kubectl apply -f https://raw.githubusercontent.com/kubernetes/sample-controller/master/artifacts/examples/crd.yaml
+</code></pre>
+<p>Confirm whether the <code>CRD</code> was installed:</p>
+<pre><code class="language-bash">kubectl get crd
+
+# output
+NAME                           CREATED AT
+foos.samplecontroller.k8s.io   2022-07-08T09:28:46Z
+
+kubectl get foos.samplecontroller.k8s.io
+
+#output (as expected)
+No resources found in default namespace.
+</code></pre>
+<p>So, we just installed a <code>CRD</code> with the name <code>foos.samplecontroller.k8s.io</code> and type <code>Foo</code>. Its possible to create an instance of this using <code>yaml</code>... but...</p>
+<p><strong>We are here to write Go code!</strong></p>
+<p>To do that, first import the <code>CRD</code> as an API using <code>cdk8s</code> - this will automatically create the corresponding Go API representations (<code>struct</code>s etc.):</p>
+<pre><code class="language-bash">cdk8s import https://raw.githubusercontent.com/kubernetes/sample-controller/master/artifacts/examples/crd.yaml
+</code></pre>
+<p>Check the <code>imports</code> directory, an additional folder should have been created. </p>
+<pre><code>imports/
+└── samplecontrollerk8sio
+    ├── internal
+    │   └── types.go
+    ├── jsii
+    │   ├── jsii.go
+    │   └── samplecontrollerk8sio-0.0.0.tgz
+    ├── samplecontrollerk8sio.go
+    ├── samplecontrollerk8sio.init.go
+    └── version
+</code></pre>
+<p>We can now use the <code>CRD</code> just like any other Kubernetes resource/API (like <code>Deployment</code>) and import it in the <code>cdk8s</code> Go code. Create a new file called <code>foo.go</code> and copy the following code:</p>
+<pre><code class="language-go">package main
+
+import (
+    &quot;cdk8s-crd/imports/samplecontrollerk8sio&quot;
+
+    &quot;github.com/aws/constructs-go/constructs/v10&quot;
+    &quot;github.com/aws/jsii-runtime-go&quot;
+    &quot;github.com/cdk8s-team/cdk8s-core-go/cdk8s/v2&quot;
+)
+
+type FooChartProps struct {
+    cdk8s.ChartProps
+}
+
+func NewFooChart(scope constructs.Construct, id string, props *FooChartProps) cdk8s.Chart {
+    var cprops cdk8s.ChartProps
+    if props != nil {
+        cprops = props.ChartProps
+    }
+    chart := cdk8s.NewChart(scope, jsii.String(id), &amp;cprops)
+
+    samplecontrollerk8sio.NewFoo(chart, jsii.String(&quot;foo1&quot;), &amp;samplecontrollerk8sio.FooProps{Spec: &amp;samplecontrollerk8sio.FooSpec{DeploymentName: jsii.String(&quot;foo1-dep&quot;), Replicas: jsii.Number(2)}})
+
+    return chart
+}
+</code></pre>
+<p>See how we created an instance of <code>samplecontrollerk8sio.Foo</code>:
+- Imported the autogenerated CRD API from the <code>cdk8s-crd/imports/samplecontrollerk8sio</code> package,
+- Used the <code>NewFoo</code> function and provided the metadata via <code>FooProps</code></p>
+<p>Replace the contents of <code>main.go</code> with the following:</p>
+<pre><code class="language-go">package main
+
+import (
+    &quot;github.com/cdk8s-team/cdk8s-core-go/cdk8s/v2&quot;
+)
+
+type MyChartProps struct {
+    cdk8s.ChartProps
+}
+
+func main() {
+    app := cdk8s.NewApp(nil)
+    NewFooChart(app, &quot;FooApp&quot;, nil)
+    app.Synth()
+}
+</code></pre>
+<p>All we is include the <code>Chart</code> that we defined just now (in <code>foo.go</code>) and include it in the <code>cdk8s</code> <code>App</code>.</p>
+<p><strong>To create the <code>Foo</code> resource...</strong></p>
+<p>Run <code>cdk8s synth</code> - this will result in a manifest in the <code>dist</code> folder:</p>
+<pre><code class="language-yaml">apiVersion: samplecontroller.k8s.io/v1alpha1
+kind: Foo
+spec:
+  deploymentName: foo1-dep
+  replicas: 2
+metadata:
+  name: fooapp-foo1-c80094ac
+</code></pre>
+<p>To create it in Kubernetes:</p>
+<pre><code>kubectl apply -f dist
+</code></pre>
+<p>You can confirm by running :</p>
+<pre><code>kubectl get foo
+kubectl get foos.samplecontroller.k8s.io
+</code></pre>
+<blockquote>
+<p>To introspect further, you can use the name of the created resource e.g. <code>kubectl describe foo/fooapp-foo1-c80094ac</code></p>
+</blockquote>
+<p>Alright, now that you've seen a simple example, we can move on to something slightly more advanced.</p>
+<h3 id="setup-kafka-on-kubernetes-using-strimzi-cdk8s-and-go">Setup Kafka on Kubernetes using Strimzi, <code>cdk8s</code> and Go</h3>
+<p><a href="https://strimzi.io/">Strimzi</a> is an open-source CNCF project and one of my personal favourites! If you don't know about Strimzi, that's ok. It's enough to understand that it provides a way to run an Apache Kafka on Kubernetes with the help of Custom Resource Definitions and corresponding Operators for components such as Kafka cluster, Kafka Connect topic, users, Kafka Mirror etc. </p>
+<p>Here is a <a href="https://strimzi.io/docs/operators/latest/images/overview/kafka-concepts-supporting-components.png">high-level diagram</a> of how the different Strimzi components interact. Since a Strimzi deep-dive is out of scope, I would recommend that you refer its (excellent!) <a href="https://strimzi.io/docs/">documentation</a> for details.</p>
+<p><img alt="" src="https://strimzi.io/docs/operators/latest/images/overview/kafka-concepts-supporting-components.png" /></p>
+<p>As before, we need to first install the CRD itself (you can also refer to the <a href="https://strimzi.io/quickstarts/">Strimzi Quickstart</a>)</p>
+<pre><code class="language-bash">kubectl create namespace kafka
+kubectl create -f 'https://strimzi.io/install/latest?namespace=kafka' -n kafka
+
+# wait for the Operator Pod to start up (Running)
+kubectl get pod -n kafka --watch
+</code></pre>
+<blockquote>
+<p>You can also check the Operator logs using <code>kubectl logs deployment/strimzi-cluster-operator -n kafka -f</code></p>
+</blockquote>
+<p>Each supported Kafka component (cluster, connect, user etc.) has a corresponding Custom Resource Definition - for the purposes of this chapter, we will just use the Kafka cluster and topic CRDs. Let's import them as an API:</p>
+<pre><code class="language-bash">cdk8s import https://raw.githubusercontent.com/strimzi/strimzi-kafka-operator/main/install/cluster-operator/040-Crd-kafka.yaml
+
+cdk8s import kafkatopic:=https://raw.githubusercontent.com/strimzi/strimzi-kafka-operator/main/install/cluster-operator/043-Crd-kafkatopic.yaml
+</code></pre>
+<blockquote>
+<p>Note that I've prepended <code>kafkatopic</code> to the module name for Kafka topic CRD</p>
+</blockquote>
+<p>Check the <code>imports</code> folder - you should see two additional folders named <code>kafkastrimziio</code> and <code>kafkatopic_kafkastrimziio</code>.</p>
+<p><strong>Time for some Go code, again</strong></p>
+<p>Create a <code>kafka_strimzi.go</code> file and copy the code <a href="https://github.com/abhirockzz/cdk8s-for-go-developers/blob/master/part3-crd/kafka_strimzi.go">from Github repo</a>:</p>
+<blockquote>
+<p>Or you can also simply do this: <code>curl -o kafka.go https://raw.githubusercontent.com/abhirockzz/cdk8s-for-go-developers/master/part3-crd/kafka_strimzi.go</code></p>
+</blockquote>
+<p>I will walk you through the important parts of the code here. Start with the <code>NewKafkaChart</code> function that creates a new <code>Chart</code>.</p>
+<pre><code class="language-go">func NewKafkaChart(scope constructs.Construct, id string, props *KafkaChartProps) cdk8s.Chart {
+    //.... ommitted for brevity
+    chart := cdk8s.NewChart(scope, jsii.String(id), &amp;cprops)
+</code></pre>
+<p>See how the Kafka cluster is defined using <code>kafkastrimziio.KafkaProps</code> struct (for a deep-dive into each of these components you can refer to <a href="https://strimzi.io/docs/operators/latest/configuring.html#assembly-config-kafka-str">Strimzi documentation</a>). We specify the Kafka version, number of nodes/replicas (we will stick to a single node replica) how to expose the cluster etc. </p>
+<pre><code class="language-go">//....
+&amp;kafkastrimziio.KafkaProps{
+            Spec: &amp;kafkastrimziio.KafkaSpec{
+                Kafka: &amp;kafkastrimziio.KafkaSpecKafka{
+
+                    Version:  jsii.String(&quot;3.2.0&quot;),
+                    Replicas: jsii.Number(1),
+                    Listeners: &amp;[]*kafkastrimziio.KafkaSpecKafkaListeners{
+                        {
+                            Name: jsii.String(&quot;plain&quot;),
+                            Port: jsii.Number(9092),
+                            Type: kafkastrimziio.KafkaSpecKafkaListenersType_INTERNAL,
+                            Tls:  jsii.Bool(false),
+                        },
+                    },
+//....
+</code></pre>
+<p>Then we add required config for the Kafka cluster (in-line with the fact that we have a single node cluster only) as well as storage (ephemeral storage will work for this example).</p>
+<pre><code class="language-go">//...
+Config: map[string]interface{}{
+                        &quot;offsets.topic.replication.factor&quot;:         1,
+                        &quot;transaction.state.log.replication.factor&quot;: 1,
+                        &quot;transaction.state.log.min.isr&quot;:            1,
+                        &quot;default.replication.factor&quot;:               1,
+                        &quot;min.insync.replicas&quot;:                      1,
+                        &quot;inter.broker.protocol.version&quot;:            &quot;3.2&quot;,
+                    },
+                    Storage: &amp;kafkastrimziio.KafkaSpecKafkaStorage{
+                        Type: kafkastrimziio.KafkaSpecKafkaStorageType_EPHEMERAL,
+                    },
+//...
+</code></pre>
+<p>Finally, we configure Zookeeper as well as the <a href="https://strimzi.io/docs/operators/latest/configuring.html#assembly-kafka-entity-operator-str">Entity operator</a> that handles Kafka topics (as well as users, although we don't use it here)</p>
+<pre><code class="language-go">//...
+Zookeeper: &amp;kafkastrimziio.KafkaSpecZookeeper{
+                    Replicas: jsii.Number(1),
+                    Storage: &amp;kafkastrimziio.KafkaSpecZookeeperStorage{
+                        Type: kafkastrimziio.KafkaSpecZookeeperStorageType_EPHEMERAL,
+                    },
+                },
+                EntityOperator: &amp;kafkastrimziio.KafkaSpecEntityOperator{
+                    TopicOperator: &amp;kafkastrimziio.KafkaSpecEntityOperatorTopicOperator{},
+                }}})
+//...
+</code></pre>
+<p>To wire it up, update the <code>main.go</code> file:</p>
+<pre><code class="language-go">func main() {
+    app := cdk8s.NewApp(nil)
+    //NewFooChart(app, &quot;FooApp&quot;, nil)
+    NewKafkaChart(app, &quot;KafkaApp&quot;, nil)
+    app.Synth()
+}
+</code></pre>
+<p><strong>To create a Kafka cluster using the CRD...</strong></p>
+<p>Follow the the usual workflow: </p>
+<pre><code class="language-bash"># generate manifest (check it in dist folder)
+cdk8s synth
+
+# apply it (note the kafka namespace)
+kubectl apply -f dist/ -n kafka
+</code></pre>
+<p>Wait for the resources to be created:</p>
+<pre><code class="language-bash">KAFKA_CRD_INSTANCE_NAME=$(kubectl get kafka -n kafka -o=jsonpath='{.items[0].metadata.name}')
+kubectl wait kafka/$KAFKA_CRD_INSTANCE_NAME --for=condition=Ready --timeout=300s -n kafka
+</code></pre>
+<p>Once all the Kafka cluster resources are created, you should see the following message - <code>kafka.kafka.strimzi.io/&lt;name of your Kafka CRD instance&gt; condition met</code>. The Kafka cluster is now ready and we can test it using the good old Kafka CLI based producer and consumer (instructions in Strimzi quickstart).</p>
+<pre><code class="language-bash">BOOSTRAP_SERVER=$(kubectl get kafka -n kafka -o=jsonpath='{.items[0].metadata.name}')-kafka-bootstrap
+
+kubectl -n kafka run kafka-producer -ti --image=quay.io/strimzi/kafka:0.29.0-kafka-3.2.0 --rm=true --restart=Never -- bin/kafka-console-producer.sh --bootstrap-server $BOOSTRAP_SERVER:9092 --topic test-topic
+
+kubectl -n kafka run kafka-consumer -ti --image=quay.io/strimzi/kafka:0.29.0-kafka-3.2.0 --rm=true --restart=Never -- bin/kafka-console-consumer.sh --bootstrap-server $BOOSTRAP_SERVER:9092 --topic test-topic --from-beginning
+</code></pre>
+<p><img alt="" src="images/kafka-demo.png" /></p>
+<p>That's all for now!</p>
+<h2 id="time-to-wrap-up">Time to wrap up...</h2>
+<p>You learnt how to combine Kubernetes Custom Resource definition with <code>cdk8s</code>. This is really powerful and means that you can continue to use code (in this case, written in Go) to define built-in Kubernetes resources (like <code>Deployment</code>s etc.) as well as Custom resources!</p>
+<p><strong>Did you like what you tried?</strong></p>
+<p>Well, you can continue learning! Couple of suggestions:</p>
+<ol>
+<li>You can try updating the existing code to add a <code>Deployment</code> resource that refers to a Kafka client app (you have to write it and package it as a Docker container first) and can access the Kafka cluster you created. Explore how you can get the connectivity parameters..</li>
+<li>The Kafka cluster we created was configured to have <strong>Internal</strong> access only. Explore options to expose it externally (refer to Strimzi documentation) and update the code to implement that (should be a small change). Which Kubernetes objects will be affected by it?</li>
+</ol>
+
+
+
+
+              
+            </article>
+            
+          </div>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+    <nav class="md-footer__inner md-grid" aria-label="Footer" >
+      
+        
+        <a href="../Part%202%3A%20cdk8s-plus%20in%20action/" class="md-footer__link md-footer__link--prev" aria-label="Previous: cdk8s-plus in action!" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              cdk8s-plus in action!
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="../Part%204%3A%20Extend%20cdk8s%20with%20custom%20Constructs/" class="md-footer__link md-footer__link--next" aria-label="Next: Extend cdk8s with custom Constructs" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              Extend cdk8s with custom Constructs
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.ecf98df9.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.9c69f0bc.min.js"></script>
+      
+    
+  </body>
+</html>
