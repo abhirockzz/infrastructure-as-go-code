@@ -614,6 +614,7 @@
 
   <h1>cdk8s-plus in action!</h1>
 
+<p><img alt="" src="../images/cdk8s.horizontal.color.png" /></p>
 <p>The previous chapter covered how to get started with <a href="https://cdk8s.io/docs/latest/">cdk8s</a> (Cloud Development Kit for Kubernetes), that is an an open-source framework (part of CNCF) using which you can define your Kubernetes applications using regular programming languages (instead of <code>yaml</code>). </p>
 <p>You were able to setup a simple <code>nginx</code> Deployment and accessed it via a <code>Service</code> - all this was done using Go, which was then converted to <code>yaml</code> (using <code>cdk8s synth</code>) and submitted to the cluster using <code>kubectl</code>. This was a good start. However, since the core <code>cdk8s</code> library is pretty low-level (for a good reason!) the code involved lot of boilerplate (you can <a href="https://github.com/abhirockzz/cdk8s-for-go-developers/tree/master/part1-getting-started">refer to the code here</a>). </p>
 <p><code>cdk8s-plus</code> leverages building blocks from <code>cdk8s</code> core library, thereby helping reduce verbosity and complexity by providing higher level abstractions/APIs for all Kubernetes objects such as <code>Deployment</code>s, <code>Service</code>s, etc. In this blog, we will see <code>cdk8s-plus</code> in action and even deploy Wordpress on Kubernetes with it!</p>

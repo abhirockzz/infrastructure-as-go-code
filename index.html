@@ -213,15 +213,15 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#infrastructure-is-code-a-different-way-of-thinking-about-this" class="md-nav__link">
-    Infrastructure-IS-Code - A different way of thinking about this
+  <a href="#what-does-it-mean-in-the-context-of-kubernetes" class="md-nav__link">
+    What does it mean in the context of Kubernetes?
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#applying-infra-is-code-mantra-to-kubernetes" class="md-nav__link">
-    Applying "Infra-Is-Code" mantra to Kubernetes
+  <a href="#infrastructure-is-code" class="md-nav__link">
+    Infrastructure IS Code
   </a>
   
 </li>
@@ -549,15 +549,15 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#infrastructure-is-code-a-different-way-of-thinking-about-this" class="md-nav__link">
-    Infrastructure-IS-Code - A different way of thinking about this
+  <a href="#what-does-it-mean-in-the-context-of-kubernetes" class="md-nav__link">
+    What does it mean in the context of Kubernetes?
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#applying-infra-is-code-mantra-to-kubernetes" class="md-nav__link">
-    Applying "Infra-Is-Code" mantra to Kubernetes
+  <a href="#infrastructure-is-code" class="md-nav__link">
+    Infrastructure IS Code
   </a>
   
 </li>
@@ -577,8 +577,13 @@
 
 
 <h1 id="welcome">Welcome!</h1>
-<p>Infrastructure as Code (IaC) is a well established paradigm and refers to the standard practice of treating  infrastructure (network, disk, storage, databases, message queues etc.) in the same way as application code and applying general software engineering practices including source control versioning, testing and more. For exampple, <a href="https://www.terraform.io/">Terraform</a> and <a href="https://docs.aws.amazon.com/cloudformation/index.html">AWS CloudFormation</a> are widely-adopted technologies that use configuration files/templates to represent the infrastructure components.</p>
-<h3 id="infrastructure-is-code-a-different-way-of-thinking-about-this">Infrastructure-IS-Code - A different way of thinking about this</h3>
+<p>Infrastructure as Code (IaC) is a well established paradigm and refers to the standard practice of treating infrastructure (network, disk, storage, databases, message queues etc.) in the same way as application code and applying general software engineering practices including source control versioning, testing and more. For example, <a href="https://www.terraform.io/">Terraform</a> and <a href="https://docs.aws.amazon.com/cloudformation/index.html">AWS CloudFormation</a> are widely-adopted technologies that use configuration files/templates to represent the infrastructure components.</p>
+<h3 id="what-does-it-mean-in-the-context-of-kubernetes">What does it mean in the context of Kubernetes?</h3>
+<p>Over the course of next few (relatively short!) chapters, I will cover how Go developers can use the <a href="https://cdk8s.io/docs/latest/">cdk8s</a> (Cloud Development Kit for Kubernetes) project for defining Kubernetes resources. It's an open-source framework (also part of CNCF)  that provides high-level abstractions which can be composed into larger Kubernetes applications. Instead of adopting YAML or other configuration/template driven approach, <code>cdk8s</code> supports multiple programming languages, which means you can work with Kubernetes resources using familiar concepts such as classes, methods, etc. Ultimately, <code>cdk8s</code> generates Kubernetes manifests which you can <code>apply</code> using <code>kubectl</code> - business as usual!</p>
+<blockquote>
+<p>At the time of writing, <code>cdk8s</code> supports Go, Typescript, Python and Java</p>
+</blockquote>
+<h3 id="infrastructure-is-code">Infrastructure <strong>IS</strong> Code</h3>
 <p>Imagine you have an application that comprises of a Serverless function fronted by an API Gateway along with a NoSQL database as the backend. Instead of defining it in a static way (using JSON, YAML etc.), one can represent these components using standard programming language constructs such as classes, methods, etc. Here is pseudo-code example:</p>
 <pre><code>DBTable table = new DBTable(&quot;demo-table&quot;);
 table.addPrimaryKey(&quot;email&quot;, Type.String);
@@ -596,10 +601,9 @@ apigw.addFunctionIntegration(function);
 <blockquote>
 <p><a href="https://go.dev/solutions/cloud">"In fact, over 75 percent of projects in the Cloud Native Computing Foundation are written in Go."</a></p>
 </blockquote>
-<h3 id="applying-infra-is-code-mantra-to-kubernetes">Applying "Infra-Is-Code" mantra to Kubernetes</h3>
-<p>Over the course of next few (relatively short!) chapters, I will cover how Go developers can use the <a href="https://cdk8s.io/docs/latest/">cdk8s</a> (Cloud Development Kit for Kubernetes) project for defining Kubernetes resources. It's an open-source framework (also part of CNCF)  that provides high-level abstractions which can be composed into larger Kubernetes applications. Instead of adopting YAML or other configuration/template driven approach, <code>cdk8s</code> supports multiple programming languages, which means you can work with Kubernetes resources using familiar concepts such as classes, methods, etc. Ultimately, <code>cdk8s</code> generates Kubernetes manifests which you can <code>apply</code> using <code>kubectl</code> - business as usual!</p>
+<p><a href="Part%201%3A%20Getting%20started%20with%20cdk8s/">Let's get started!!!!</a></p>
 <blockquote>
-<p>At the time of writing, <code>cdk8s</code> supports Go, Typescript, Python and Java</p>
+<p>This is based on <a href="https://dev.to/abhirockzz/write-your-kubernetes-infrastructure-as-go-code-getting-started-with-cdk8s-37n">this blog series</a></p>
 </blockquote>
 
 
