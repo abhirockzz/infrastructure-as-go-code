@@ -1,0 +1,1204 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../Part%204%3A%20Extend%20cdk8s%20with%20custom%20Constructs/">
+      
+      
+        <link rel="next" href="../Part%206%3A%20Coming%20soon/">
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.3">
+    
+    
+      
+        <title>Write your Kubernetes Infrastructure as Go code - Manage AWS services - Write your Kubernetes Infrastructure as Go code</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.6b71719e.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.2505c338.min.css">
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="" data-md-color-accent="">
+  
+    
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#whats-covered-in-this-blog-post" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Write your Kubernetes Infrastructure as Go code" class="md-header__button md-logo" aria-label="Write your Kubernetes Infrastructure as Go code" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Write your Kubernetes Infrastructure as Go code
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Write your Kubernetes Infrastructure as Go code - Manage AWS services
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Write your Kubernetes Infrastructure as Go code" class="md-nav__button md-logo" aria-label="Write your Kubernetes Infrastructure as Go code" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    Write your Kubernetes Infrastructure as Go code
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        Welcome!
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " data-md-toggle="__nav_2" type="checkbox" id="__nav_2" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2" tabindex="0" aria-expanded="false">
+          Part 1: Getting started with cdk8s
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Part 1: Getting started with cdk8s" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          Part 1: Getting started with cdk8s
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Part%201%3A%20Getting%20started%20with%20cdk8s/" class="md-nav__link">
+        Getting started with cdk8s
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " data-md-toggle="__nav_3" type="checkbox" id="__nav_3" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3" tabindex="0" aria-expanded="false">
+          Part 2: cdk8s plus in action
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Part 2: cdk8s plus in action" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          Part 2: cdk8s plus in action
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Part%202%3A%20cdk8s-plus%20in%20action/" class="md-nav__link">
+        cdk8s-plus in action!
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " data-md-toggle="__nav_4" type="checkbox" id="__nav_4" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4" tabindex="0" aria-expanded="false">
+          Part 3: Using Custom Resource Definitions with cdk8s
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Part 3: Using Custom Resource Definitions with cdk8s" data-md-level="1">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          Part 3: Using Custom Resource Definitions with cdk8s
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Part%203%3A%20Using%20Custom%20Resource%20Definitions%20with%20cdk8s/" class="md-nav__link">
+        Using Custom Resource Definitions with cdk8s
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " data-md-toggle="__nav_5" type="checkbox" id="__nav_5" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_5" tabindex="0" aria-expanded="false">
+          Part 4: Extend cdk8s with custom Constructs
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Part 4: Extend cdk8s with custom Constructs" data-md-level="1">
+        <label class="md-nav__title" for="__nav_5">
+          <span class="md-nav__icon md-icon"></span>
+          Part 4: Extend cdk8s with custom Constructs
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Part%204%3A%20Extend%20cdk8s%20with%20custom%20Constructs/" class="md-nav__link">
+        Extend cdk8s with custom Constructs
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " data-md-toggle="__nav_6" type="checkbox" id="__nav_6" checked>
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6" tabindex="0" aria-expanded="true">
+          Part 5: Write your Kubernetes Infrastructure as Go code   Manage AWS services
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Part 5: Write your Kubernetes Infrastructure as Go code   Manage AWS services" data-md-level="1">
+        <label class="md-nav__title" for="__nav_6">
+          <span class="md-nav__icon md-icon"></span>
+          Part 5: Write your Kubernetes Infrastructure as Go code   Manage AWS services
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Write your Kubernetes Infrastructure as Go code - Manage AWS services
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Write your Kubernetes Infrastructure as Go code - Manage AWS services
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#whats-covered-in-this-blog-post" class="md-nav__link">
+    What's covered in this blog post?
+  </a>
+  
+    <nav class="md-nav" aria-label="What's covered in this blog post?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cdk8s-what-why-because-infrastructure-is-code" class="md-nav__link">
+    cdk8s? what, why? Because, Infrastructure IS code
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    Prerequisites
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#set-up-the-dynamodb-controller" class="md-nav__link">
+    Set up the DynamoDB controller
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#we-can-move-on-to-the-fun-parts" class="md-nav__link">
+    We can move on to the fun parts!
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kubernetes-infrastructure-as-go-code-with-cdk8s" class="md-nav__link">
+    Kubernetes infrastructure as Go code with cdk8s
+  </a>
+  
+    <nav class="md-nav" aria-label="Kubernetes infrastructure as Go code with cdk8s">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#but-whats-fieldexportservicesk8saws" class="md-nav__link">
+    But what's fieldexport.services.k8s.aws??
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cdk8s-code-walk-through" class="md-nav__link">
+    cdk8s code walk-through
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dont-forget-to-delete-resources" class="md-nav__link">
+    Don't forget to delete resources..
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#wrap-up" class="md-nav__link">
+    Wrap up..
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " data-md-toggle="__nav_7" type="checkbox" id="__nav_7" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_7" tabindex="0" aria-expanded="false">
+          Part 6: Coming soon
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Part 6: Coming soon" data-md-level="1">
+        <label class="md-nav__title" for="__nav_7">
+          <span class="md-nav__icon md-icon"></span>
+          Part 6: Coming soon
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Part%206%3A%20Coming%20soon/" class="md-nav__link">
+        Write your Kubernetes Infrastructure as Go code - Combine cdk8s with AWS CDK
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#whats-covered-in-this-blog-post" class="md-nav__link">
+    What's covered in this blog post?
+  </a>
+  
+    <nav class="md-nav" aria-label="What's covered in this blog post?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cdk8s-what-why-because-infrastructure-is-code" class="md-nav__link">
+    cdk8s? what, why? Because, Infrastructure IS code
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    Prerequisites
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#set-up-the-dynamodb-controller" class="md-nav__link">
+    Set up the DynamoDB controller
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#we-can-move-on-to-the-fun-parts" class="md-nav__link">
+    We can move on to the fun parts!
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kubernetes-infrastructure-as-go-code-with-cdk8s" class="md-nav__link">
+    Kubernetes infrastructure as Go code with cdk8s
+  </a>
+  
+    <nav class="md-nav" aria-label="Kubernetes infrastructure as Go code with cdk8s">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#but-whats-fieldexportservicesk8saws" class="md-nav__link">
+    But what's fieldexport.services.k8s.aws??
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cdk8s-code-walk-through" class="md-nav__link">
+    cdk8s code walk-through
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dont-forget-to-delete-resources" class="md-nav__link">
+    Don't forget to delete resources..
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#wrap-up" class="md-nav__link">
+    Wrap up..
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+  <h1>Write your Kubernetes Infrastructure as Go code - Manage AWS services</h1>
+
+<p><strong><em>Deploy DynamoDB and a client app using <code>cdk8s</code> along with AWS Controller for Kubernetes</em></strong></p>
+<p><a href="https://aws-controllers-k8s.github.io/community/docs/community/overview/">AWS Controllers for Kubernetes</a> (also known as <strong>ACK</strong>) are built around the Kubernetes extension concepts of <a href="https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/#custom-resources">Custom Resource and Custom Resource Definitions</a>. You can use <code>ACK</code> to define and use AWS services directly from Kubernetes. This helps you take advantage of managed AWS services for your Kubernetes applications without needing to define resources outside of the cluster.</p>
+<p>Say you need to use a <a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/UsingBucket.html">AWS S3 Bucket</a> in your application that's deployed to Kubernetes. Instead of using AWS console, AWS CLI, AWS CloudFormation etc., you can define the AWS <code>S3</code> Bucket in a YAML manifest file and deploy it using familiar tools such as <code>kubectl</code>. The end goal is to allow users (Software Engineers, DevOps engineers, operators etc.) to use the same interface (Kubernetes API in this case) to describe and manage AWS services along with native Kubernetes resources such as <code>Deployment</code>, <code>Service</code> etc.</p>
+<p>Here is a diagram from the ACK documentation, that provides a high level overview:</p>
+<p><img alt="" src="https://aws-controllers-k8s.github.io/community/docs/community/images/ack-how-it-works.png" /></p>
+<h2 id="whats-covered-in-this-blog-post">What's covered in this blog post?</h2>
+<p>ACK supports <a href="https://aws-controllers-k8s.github.io/community/docs/community/services/#amazon-dynamodb">many AWS services</a>, including <a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Introduction.html">Amazon DynamoDB</a>. One of the topics that this blog post covers is <em>how to use <code>ACK</code> on <a href="https://docs.aws.amazon.com/eks/latest/userguide/what-is-eks.html">Amazon EKS</a> for managing <code>DynamoDB</code></em>. But, just creating a <code>DynamoDB</code> table isn't going to be all that interesting! </p>
+<p>In addition to it, you will also work with and deploy a client application - this is a trimmed down version of the URL shortener app covered in a <a href="https://dev.to/aws/build-a-serverless-url-shortener-with-go-10i2">previous blog post</a>. While the first half of the blog will involve manual steps to help you understand the mechanics and get started, in the second half, we will switch to <code>cdk8s</code> and achieve the same goals using nothing but Go code.</p>
+<p><img alt="Image description" src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/6po2lky80twltd16qozm.png" /></p>
+<h3 id="cdk8s-what-why-because-infrastructure-is-code">cdk8s? what, why? Because, Infrastructure <em>IS</em> code</h3>
+<p><a href="https://cdk8s.io/docs/latest/">cdk8s</a> (Cloud Development Kit for Kubernetes) is an open-source framework (part of CNCF) that allows you to define your Kubernetes applications using regular programming languages (instead of <code>yaml</code>). We will continue on the same path i.e. push <code>yaml</code> to the background and use <a href="https://go.dev/">the Go programming language</a> to define the core infrastructure (that happens to be <code>DynamoDB</code> in this example, but could be so much more) as well as the application components (Kubernetes <code>Deployment</code>, <code>Service</code> etc.). </p>
+<p>This is made possible due to the following <code>cdk8s</code> features:</p>
+<ol>
+<li><code>cdk8s</code> support for <a href="https://dev.to/abhirockzz/write-your-kubernetes-infrastructure-as-go-code-using-custom-resource-definitions-with-cdk8s-1eei">Kubernetes Custom Resource definitions</a> that lets us magically import CRD as APIs.</li>
+<li><a href="https://cdk8s.io/docs/latest/plus/">cdk8s-plus library</a> that helps reduce/eliminate a lot of boilerplate code while working with Kubernetes resources in our Go code (or any other language for that matter)</li>
+</ol>
+<p>Before you dive in, please ensure you complete the prerequisites in order to work through the tutorial.</p>
+<blockquote>
+<p>The code is <a href="https://github.com/abhirockzz/cdk8s-for-go-developers/tree/master/part5-dynamodb-eks-ack-cdk8s">available on GitHub</a></p>
+</blockquote>
+<h2 id="prerequisites">Prerequisites</h2>
+<p>To follow along step-by-step, in addition to an AWS account, you will need to have <a href="https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html">AWS CLI</a>, <a href="https://cdk8s.io/docs/latest/getting-started/#install-the-cli">cdk8s CLI</a>, <a href="https://kubernetes.io/docs/tasks/tools/#kubectl">kubectl</a>, <a href="https://helm.sh/docs/intro/install/">helm</a> and the <a href="https://go.dev/dl/">Go programming language</a> installed.</p>
+<p>There are a variety of ways in which you can create an <a href="https://docs.aws.amazon.com/eks/latest/userguide/create-cluster.html">Amazon EKS cluster</a>. I prefer using <a href="https://eksctl.io/">eksctl</a> CLI because of the convenience it offers!</p>
+<p>Ok let's get started. The first thing we need to do is...</p>
+<h2 id="set-up-the-dynamodb-controller">Set up the DynamoDB controller</h2>
+<blockquote>
+<p>Most of the below steps are adapted from the <code>ACK</code> documentation - <a href="https://aws-controllers-k8s.github.io/community/docs/user-docs/install/">Install an ACK Controller</a></p>
+</blockquote>
+<p><strong>Install it using <code>Helm</code>:</strong></p>
+<pre><code class="language-bash">export SERVICE=dynamodb
+export RELEASE_VERSION=`curl -sL https://api.github.com/repos/aws-controllers-k8s/$SERVICE-controller/releases/latest | grep '&quot;tag_name&quot;:' | cut -d'&quot;' -f4`
+export ACK_SYSTEM_NAMESPACE=ack-system
+
+# you can change the region if required
+export AWS_REGION=us-east-1
+
+aws ecr-public get-login-password --region us-east-1 | helm registry login --username AWS --password-stdin public.ecr.aws
+
+helm install --create-namespace -n $ACK_SYSTEM_NAMESPACE ack-$SERVICE-controller \
+  oci://public.ecr.aws/aws-controllers-k8s/$SERVICE-chart --version=$RELEASE_VERSION --set=aws.region=$AWS_REGION
+</code></pre>
+<p>To confirm, run:</p>
+<pre><code class="language-bash">kubectl get crd
+
+# output (multiple CRDs)
+tables.dynamodb.services.k8s.aws
+fieldexports.services.k8s.aws
+globaltables.dynamodb.services.k8s.aws
+# etc....
+</code></pre>
+<p>Since the <code>DynamoDB</code> controller has to interact with AWS Services (make API calls), we need to configure <a href="https://docs.aws.amazon.com/eks/latest/userguide/iam-roles-for-service-accounts.html">IAM Roles for Service Accounts</a> (also known as <strong>IRSA</strong>).</p>
+<blockquote>
+<p>Refer to <a href="https://aws-controllers-k8s.github.io/community/docs/user-docs/irsa/">Configure IAM Permissions</a> for details</p>
+</blockquote>
+<p><strong>IRSA configuration</strong></p>
+<p>First, create an OIDC identity provider for your cluster.</p>
+<pre><code class="language-bash">export EKS_CLUSTER_NAME=&lt;name of your EKS cluster&gt;
+export AWS_REGION=&lt;cluster region&gt;
+eksctl utils associate-iam-oidc-provider --cluster $EKS_CLUSTER_NAME --region $AWS_REGION --approve
+</code></pre>
+<p>The goal is to create an IAM role and attach appropriate permissions via policies. We can then create a <a href="https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/">Kubernetes Service Account</a> and attach the IAM role to it. Thus, the controller <code>Pod</code> will be able to make AWS API calls. Note that we are using providing all <code>DynamoDB</code> permissions to our control via the <code>arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess</code> policy.</p>
+<p>Thanks to <code>eksctl</code>, this can be done with a single line!</p>
+<pre><code class="language-bash">export SERVICE=dynamodb
+export ACK_K8S_SERVICE_ACCOUNT_NAME=ack-$SERVICE-controller
+
+# recommend using the same name
+export ACK_SYSTEM_NAMESPACE=ack-system
+export EKS_CLUSTER_NAME=&lt;enter EKS cluster name&gt;
+export POLICY_ARN=arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess
+
+# IAM role has a format - do not change it. you can't use any arbitrary name
+export IAM_ROLE_NAME=ack-$SERVICE-controller-role
+
+eksctl create iamserviceaccount \
+    --name $ACK_K8S_SERVICE_ACCOUNT_NAME \
+    --namespace $ACK_SYSTEM_NAMESPACE \
+    --cluster $EKS_CLUSTER_NAME \
+    --role-name $IAM_ROLE_NAME \
+    --attach-policy-arn $POLICY_ARN \
+    --approve \
+    --override-existing-serviceaccounts
+</code></pre>
+<blockquote>
+<p>The policy is per https://github.com/aws-controllers-k8s/dynamodb-controller/blob/main/config/iam/recommended-policy-arn</p>
+</blockquote>
+<p>To confirm, you can check whether the IAM role was created and also introspect the Kubernetes service account</p>
+<pre><code class="language-bash">aws iam get-role --role-name=$IAM_ROLE_NAME --query Role.Arn --output text
+
+kubectl describe serviceaccount/$ACK_K8S_SERVICE_ACCOUNT_NAME -n $ACK_SYSTEM_NAMESPACE
+
+# you will see similar output
+
+Name:                ack-dynamodb-controller
+Namespace:           ack-system
+Labels:              app.kubernetes.io/instance=ack-dynamodb-controller
+                     app.kubernetes.io/managed-by=eksctl
+                     app.kubernetes.io/name=dynamodb-chart
+                     app.kubernetes.io/version=v0.1.3
+                     helm.sh/chart=dynamodb-chart-v0.1.3
+                     k8s-app=dynamodb-chart
+Annotations:         eks.amazonaws.com/role-arn: arn:aws:iam::&lt;your AWS account ID&gt;:role/ack-dynamodb-controller-role
+                     meta.helm.sh/release-name: ack-dynamodb-controller
+                     meta.helm.sh/release-namespace: ack-system
+Image pull secrets:  &lt;none&gt;
+Mountable secrets:   ack-dynamodb-controller-token-bbzxv
+Tokens:              ack-dynamodb-controller-token-bbzxv
+Events:              &lt;none&gt;
+</code></pre>
+<p>For <code>IRSA</code> to take effect, you need to restart the ACK <code>Deployment</code>:</p>
+<pre><code class="language-bash"># Note the deployment name for ACK service controller from following command
+kubectl get deployments -n $ACK_SYSTEM_NAMESPACE
+
+kubectl -n $ACK_SYSTEM_NAMESPACE rollout restart deployment ack-dynamodb-controller-dynamodb-chart
+</code></pre>
+<p>Confirm that the <code>Deployment</code> has restarted (currently <code>Running</code>) and the <code>IRSA</code> is properly configured:</p>
+<pre><code class="language-bash">kubectl get pods -n $ACK_SYSTEM_NAMESPACE
+
+kubectl describe pod -n $ACK_SYSTEM_NAMESPACE ack-dynamodb-controller-dynamodb-chart-7dc99456c6-6shrm | grep &quot;^\s*AWS_&quot;
+# The output should contain following two lines:
+
+AWS_ROLE_ARN=arn:aws:iam::&lt;AWS_ACCOUNT_ID&gt;:role/&lt;IAM_ROLE_NAME&gt;
+AWS_WEB_IDENTITY_TOKEN_FILE=/var/run/secrets/eks.amazonaws.com/serviceaccount/token
+</code></pre>
+<p>Now that we're done with the configuration ...</p>
+<h2 id="we-can-move-on-to-the-fun-parts">We can move on to the fun parts!</h2>
+<p><strong>Start by creating the DynamoDB table</strong></p>
+<p>Here is what the manifest looks like:</p>
+<pre><code class="language-yaml">apiVersion: dynamodb.services.k8s.aws/v1alpha1
+kind: Table
+metadata:
+  name: dynamodb-urls-ack
+spec:
+  tableName: urls
+  attributeDefinitions:
+    - attributeName: shortcode
+      attributeType: S
+  billingMode: PAY_PER_REQUEST
+  keySchema:
+    - attributeName: email
+      keyType: HASH
+</code></pre>
+<p>Clone the project, change to the correct directory and apply the manifest:</p>
+<pre><code class="language-bash">git clone https://github.com/abhirockzz/dynamodb-ack-cdk8s
+cd dynamodb-ack-cdk8s
+
+# create table
+kubectl apply -f manual/dynamodb-ack.yaml
+</code></pre>
+<p>You can check the DynamoDB table in the AWS console, or use the AWS CLI (<code>aws dynamodb list-tables</code>) to confirm.
+Our table is ready, now we can deploy our URL shortener application.</p>
+<p>But, before that, we need to create a Docker image and push it to a private repository in <a href="https://docs.aws.amazon.com/AmazonECR/latest/userguide/what-is-ecr.html">Amazon Elastic Container Registry</a> (ECR).</p>
+<p><strong>Create private repository in Amazon ECR</strong></p>
+<p>Login to ECR:</p>
+<pre><code class="language-bash">aws ecr get-login-password --region &lt;enter region&gt; | docker login --username AWS --password-stdin &lt;enter aws_account_id&gt;.dkr.ecr.&lt;enter region&gt;.amazonaws.com
+</code></pre>
+<p>Create repository:</p>
+<pre><code class="language-bash">aws ecr create-repository \
+    --repository-name dynamodb-app \
+    --region &lt;enter AWS region&gt;
+</code></pre>
+<p><strong>Build image and push to ECR</strong></p>
+<pre><code class="language-bash"># if you're on Mac M1
+#export DOCKER_DEFAULT_PLATFORM=linux/amd64
+docker build -t dynamodb-app .
+
+docker tag dynamodb-app:latest &lt;enter aws_account_id&gt;.dkr.ecr.&lt;enter region&gt;.amazonaws.com/dynamodb-app:latest
+
+docker push &lt;enter aws_account_id&gt;.dkr.ecr.&lt;enter region&gt;.amazonaws.com/dynamodb-app:latest
+</code></pre>
+<p>Just like the controller, our application also needs <code>IRSA</code> to be able to execute <code>GetItem</code> and <code>PutItem</code> API calls on <code>DynamoDB</code>. </p>
+<p><strong>Let's create another IRSA for the application</strong></p>
+<pre><code class="language-bash"># you can change the policy name. make sure yo use the same name in subsequent commands
+aws iam create-policy --policy-name dynamodb-irsa-policy --policy-document file://manual/policy.json
+
+eksctl create iamserviceaccount --name eks-dynamodb-app-sa --namespace default --cluster &lt;enter EKS cluster name&gt; --attach-policy-arn arn:aws:iam::&lt;enter AWS account ID&gt;:policy/dynamodb-irsa-policy --approve
+
+kubectl describe serviceaccount/eks-dynamodb-app-sa
+
+# output
+
+Name:                eks-dynamodb-app-sa
+Namespace:           default
+Labels:              app.kubernetes.io/managed-by=eksctl
+Annotations:         eks.amazonaws.com/role-arn: arn:aws:iam::&lt;AWS account ID&gt;:role/eksctl-eks-cluster-addon-iamserviceaccount-d-Role1-2KTGZO1GJRN
+Image pull secrets:  &lt;none&gt;
+Mountable secrets:   eks-dynamodb-app-sa-token-5fcvf
+Tokens:              eks-dynamodb-app-sa-token-5fcvf
+Events:              &lt;none&gt;
+</code></pre>
+<p><strong>Finally, we can deploy our application!</strong></p>
+<p>In the <code>manual/app.yaml</code> file, make sure you replace the following attributes as per your environment:
+- Service account name - the above example used <code>eks-dynamodb-app-sa</code>
+- Docker image
+- Container environment variables for AWS region (e.g. <code>us-east-1</code>) and table name (this will be <code>urls</code> since that's the name we used)</p>
+<pre><code class="language-bash">kubectl apply -f app.yaml
+
+# output
+deployment.apps/dynamodb-app configured
+service/dynamodb-app-service created
+</code></pre>
+<p>This will create a <code>Deployment</code> as well as <code>Service</code> to access the application.</p>
+<blockquote>
+<p>Since the Service type is <code>LoadBalancer</code>, an appropriate <a href="https://docs.aws.amazon.com/eks/latest/userguide/network-load-balancing.html">AWS Load Balancer will be provisioned</a> to allow for external access.</p>
+</blockquote>
+<p>Check <code>Pod</code> and <code>Service</code>:</p>
+<pre><code class="language-bash">kubectl get pods
+kubectl get service/dynamodb-app-service
+
+# to get the load balancer IP
+APP_URL=$(kubectl get service/dynamodb-app-service -o jsonpath=&quot;{.status.loadBalancer.ingress[0].hostname}&quot;)
+echo $APP_URL
+
+# output example
+a0042d5b5b0ad40abba9c6c42e6342a2-879424587.us-east-1.elb.amazonaws.com
+</code></pre>
+<p>You have deployed the application and know the endpoint over which it's publicly accessible. </p>
+<p><strong>You can try out the URL shortener service</strong></p>
+<pre><code class="language-bash">curl -i -X POST -d 'https://abhirockzz.github.io/' $APP_URL:9090/
+
+# output
+HTTP/1.1 200 OK
+Date: Thu, 21 Jul 2022 11:03:40 GMT
+Content-Length: 25
+Content-Type: text/plain; charset=utf-8
+
+{&quot;ShortCode&quot;:&quot;ae1e31a6&quot;}
+</code></pre>
+<blockquote>
+<p>If you get a <code>Could not resolve host</code> error while accessing the LB URL, wait for a minute or so and re-try</p>
+</blockquote>
+<p>You should receive a JSON response with a short code. Enter the following in your browser <code>http://&lt;enter APP_URL&gt;:9090/&lt;shortcode&gt;</code> e.g. <code>http://a0042d5b5b0ad40abba9c6c42e6342a2-879424587.us-east-1.elb.amazonaws.com:9090/ae1e31a6</code> - you will be re-directed to the original URL.</p>
+<p>You can also use <code>curl</code>:</p>
+<pre><code class="language-bash"># example
+curl -i http://a0042d5b5b0ad40abba9c6c42e6342a2-879424587.us-east-1.elb.amazonaws.com:9090/ae1e31a6
+
+# output
+HTTP/1.1 302 Found
+Location: https://abhirockzz.github.io/
+Date: Thu, 21 Jul 2022 11:07:58 GMT
+Content-Length: 0
+</code></pre>
+<p>Enough of YAML I guess! Like I promised earlier, the second half will demonstrate how to achieve the same using <code>cdk8s</code> and Go.</p>
+<h2 id="kubernetes-infrastructure-as-go-code-with-cdk8s">Kubernetes infrastructure as Go code with cdk8s</h2>
+<p>Assuming you've already cloned the project (as per above instructions), change to a different directory:</p>
+<pre><code>cd dynamodb-cdk8s
+</code></pre>
+<p>This is a pre-created <code>cdk8s</code> project that you can use. The entire logic is present in <a href="https://github.com/abhirockzz/dynamodb-ack-cdk8s/blob/master/dynamodb-cdk8s/main.go">main.go file</a>. We will first try it out and confirm that it works the same way. After that we will dive into the nitty gritty of the code.</p>
+<p>Delete the previously created <code>DynamoDB</code> table and along with the <code>Deployment</code> (and <code>Service</code>) as well:</p>
+<pre><code class="language-bash"># you can also delete the table directly from AWS console
+aws dynamodb delete-table --table-name urls
+
+# this will delete Deployment and Service (as well as AWS Load Balancer)
+kubectl delete -f manual/app.yaml
+</code></pre>
+<p>Use <code>cdk8s synth</code> to generate the manifest for DynamoDB table and the application. We can then apply it using <code>kubectl</code></p>
+<blockquote>
+<p><strong>See the difference?</strong> Earlier, we defined the <code>DynamoDB</code> table, <code>Deployment</code> (and <code>Service</code>) manifests manually. <code>cdk8s</code> does <em>not</em> remove YAML altogether, but it provides a way for us to leverage regular programming languages (<code>Go</code> in this case) to define the components of our solution.</p>
+</blockquote>
+<pre><code class="language-bash">export TABLE_NAME=urls
+export SERVICE_ACCOUNT=eks-dynamodb-app-sa
+export DOCKER_IMAGE=&lt;enter ECR repo that you created earlier&gt;
+
+cdk8s synth
+
+ls -lrt dist/
+
+#output
+0000-dynamodb.k8s.yaml
+0001-deployment.k8s.yaml
+</code></pre>
+<p>You will see <em>two</em> different manifests being generated by <code>cdk8s</code> since we defined two separate <code>cdk8s.Chart</code>s in the code - more on this soon. </p>
+<p>We can deploy them one by one:</p>
+<pre><code class="language-bash">kubectl apply -f dist/0000-dynamodb.k8s.yaml
+
+#output
+table.dynamodb.services.k8s.aws/dynamodb-dynamodb-ack-cdk8s-table-c88d874d created
+configmap/export-dynamodb-urls-info created
+fieldexport.services.k8s.aws/export-dynamodb-tablename created
+fieldexport.services.k8s.aws/export-dynamodb-region created
+</code></pre>
+<p>As always, you can check the <code>DynamoDB</code> table either in console or AWS CLI - <code>aws dynamodb describe-table --table-name urls</code>. Looking at the output, the <code>DynamoDB</code> table part seems familiar...</p>
+<h3 id="but-whats-fieldexportservicesk8saws">But what's <code>fieldexport.services.k8s.aws</code>??</h3>
+<p>... And why do we need a <code>ConfigMap</code>? I will give you the gist here. </p>
+<p>In the previous iteration, we hard-coded the table name and region in <code>manual/app.yaml</code>. While this works for this sample app, it is not scalable and might not even work for a few resources in case the metadata (like name etc.) is randomly generated. That's why there is this concept of a <code>FieldExport</code> that can <em>"export any spec or status field from an ACK resource into a Kubernetes <code>ConfigMap</code> or <code>Secret</code>"</em></p>
+<p>You can read up on the details in the <a href="https://aws-controllers-k8s.github.io/community/docs/user-docs/field-export/">ACK documentation</a> along with some examples. What you will see here is how to define a <code>FieldExport</code> and <code>ConfigMap</code> along with the <code>Deployment</code> which needs to be configured to accept its environment variables from the <code>ConfigMap</code> - all this in code, using Go (more on this during code walk-through).</p>
+<p>Check the <code>FieldExport</code> and <code>ConfigMap</code>:</p>
+<pre><code class="language-bash">kubectl get fieldexport
+
+#output
+NAME                        AGE
+export-dynamodb-region      19s
+export-dynamodb-tablename   19s
+
+kubectl get configmap/export-dynamodb-urls-info -o yaml
+</code></pre>
+<p>We started out with a blank <code>ConfigMap</code> (as per <code>cdk8s</code> logic), but <code>ACK</code> magically populated it with the attributes from the <code>Table</code> custom resource.</p>
+<pre><code class="language-yaml">apiVersion: v1
+data:
+  default.export-dynamodb-region: us-east-1
+  default.export-dynamodb-tablename: urls
+immutable: false
+kind: ConfigMap
+#....omitted
+</code></pre>
+<p>We can now use the second manifest - no surprises here. Just like in the previous iteration, all it contains is the application <code>Deployment</code> and the <code>Service</code>. Check <code>Pod</code> and <code>Service</code>:</p>
+<pre><code class="language-bash">kubectl apply -f dist/0001-deployment.k8s.yaml
+
+#output
+deployment.apps/dynamodb-app created
+service/dynamodb-app-service configured
+
+kubectl get pods
+kubectl get svc
+</code></pre>
+<p>The entire setup is ready, just like it was earlier and you can test it the same way. I will not repeat the steps here. Instead, I will move to something more interesting.</p>
+<h3 id="cdk8s-code-walk-through">cdk8s code walk-through</h3>
+<p>The logic is divided into two <code>Chart</code>s. I will only focus on key sections of the code and rest will be ommitted for brevity.</p>
+<p><strong>DynamoDB and configuration</strong></p>
+<p>We start by defining the <code>DynamoDB</code> table (name it <code>urls</code>) as well as the <code>ConfigMap</code> (note that it does <em>not</em> have any data at this point):</p>
+<pre><code class="language-go">func NewDynamoDBChart(scope constructs.Construct, id string, props *MyChartProps) cdk8s.Chart {
+    //...
+    table := ddbcrd.NewTable(chart, jsii.String(&quot;dynamodb-ack-cdk8s-table&quot;), &amp;ddbcrd.TableProps{
+        Spec: &amp;ddbcrd.TableSpec{
+            AttributeDefinitions: &amp;[]*ddbcrd.TableSpecAttributeDefinitions{
+                {AttributeName: jsii.String(primaryKeyName), AttributeType: jsii.String(&quot;S&quot;)}},
+            BillingMode: jsii.String(billingMode),
+            TableName:   jsii.String(tableName),
+            KeySchema: &amp;[]*ddbcrd.TableSpecKeySchema{
+                {AttributeName: jsii.String(primaryKeyName),
+                    KeyType: jsii.String(hashKeyType)}}}})
+
+  //...
+  cfgMap = cdk8splus22.NewConfigMap(chart, jsii.String(&quot;config-map&quot;),
+        &amp;cdk8splus22.ConfigMapProps{
+            Metadata: &amp;cdk8s.ApiObjectMetadata{
+                Name: jsii.String(configMapName)}})
+</code></pre>
+<p>Then we move on to the <code>FieldExport</code>s - one each for the AWS region and the table name. As soon as these are created, the <code>ConfigMap</code> is populated with the required data as per <code>from</code> and <code>to</code> configuration in the <code>FieldExport</code>.</p>
+<pre><code class="language-go">//...
+    fieldExportForTable = servicesk8saws.NewFieldExport(chart, jsii.String(&quot;fexp-table&quot;), &amp;servicesk8saws.FieldExportProps{
+        Metadata: &amp;cdk8s.ApiObjectMetadata{Name: jsii.String(fieldExportNameForTable)},
+        Spec: &amp;servicesk8saws.FieldExportSpec{
+            From: &amp;servicesk8saws.FieldExportSpecFrom{Path: jsii.String(&quot;.spec.tableName&quot;),
+                Resource: &amp;servicesk8saws.FieldExportSpecFromResource{
+                    Group: jsii.String(&quot;dynamodb.services.k8s.aws&quot;),
+                    Kind:  jsii.String(&quot;Table&quot;),
+                    Name:  table.Name()}},
+            To: &amp;servicesk8saws.FieldExportSpecTo{
+                Name: cfgMap.Name(),
+                Kind: servicesk8saws.FieldExportSpecToKind_CONFIGMAP}}})
+
+    fieldExportForRegion = servicesk8saws.NewFieldExport(chart, jsii.String(&quot;fexp-region&quot;), &amp;servicesk8saws.FieldExportProps{
+        Metadata: &amp;cdk8s.ApiObjectMetadata{Name: jsii.String(fieldExportNameForRegion)},
+        Spec: &amp;servicesk8saws.FieldExportSpec{
+            From: &amp;servicesk8saws.FieldExportSpecFrom{
+                Path: jsii.String(&quot;.status.ackResourceMetadata.region&quot;),
+                Resource: &amp;servicesk8saws.FieldExportSpecFromResource{
+                    Group: jsii.String(&quot;dynamodb.services.k8s.aws&quot;),
+                    Kind:  jsii.String(&quot;Table&quot;),
+                    Name:  table.Name()}},
+            To: &amp;servicesk8saws.FieldExportSpecTo{
+                Name: cfgMap.Name(),
+                Kind: servicesk8saws.FieldExportSpecToKind_CONFIGMAP}}})
+//...
+</code></pre>
+<p><strong>The application chart</strong></p>
+<p>The core of our application is the <code>Deployment</code> itself:</p>
+<pre><code class="language-go">func NewDeploymentChart(scope constructs.Construct, id string, props *MyChartProps) cdk8s.Chart {
+  //...
+  dep := cdk8splus22.NewDeployment(chart, jsii.String(&quot;dynamodb-app-deployment&quot;), &amp;cdk8splus22.DeploymentProps{
+        Metadata: &amp;cdk8s.ApiObjectMetadata{
+            Name: jsii.String(&quot;dynamodb-app&quot;)},
+        ServiceAccount: cdk8splus22.ServiceAccount_FromServiceAccountName(
+            chart,
+            jsii.String(&quot;aws-irsa&quot;),
+            jsii.String(serviceAccountName))})
+</code></pre>
+<p>The next important part is the container and it's configuration. We specify the ECR image repository along with the environment variables - they reference the <code>ConfigMap</code> we defined in the previous chart (everything is connected!):</p>
+<pre><code class="language-go">//...
+container := dep.AddContainer(
+        &amp;cdk8splus22.ContainerProps{
+            Name:  jsii.String(&quot;dynamodb-app-container&quot;),
+            Image: jsii.String(image),
+            Port:  jsii.Number(appPort)})
+
+    container.Env().AddVariable(jsii.String(&quot;TABLE_NAME&quot;), cdk8splus22.EnvValue_FromConfigMap(
+        cfgMap, jsii.String(&quot;default.&quot;+*fieldExportForTable.Name()),
+        &amp;cdk8splus22.EnvValueFromConfigMapOptions{Optional: jsii.Bool(false)}))
+
+    container.Env().AddVariable(jsii.String(&quot;AWS_REGION&quot;), cdk8splus22.EnvValue_FromConfigMap(
+        cfgMap, jsii.String(&quot;default.&quot;+*fieldExportForRegion.Name()),
+        &amp;cdk8splus22.EnvValueFromConfigMapOptions{Optional: jsii.Bool(false)}))
+</code></pre>
+<p>Finally, we define the <code>Service</code> (type <code>LoadBalancer</code>) which enables external application access and tie it all together in the <code>main</code> function:</p>
+<pre><code class="language-go">//...
+    dep.ExposeViaService(
+        &amp;cdk8splus22.DeploymentExposeViaServiceOptions{
+            Name:        jsii.String(&quot;dynamodb-app-service&quot;),
+            ServiceType: cdk8splus22.ServiceType_LOAD_BALANCER,
+            Ports: &amp;[]*cdk8splus22.ServicePort{
+                {Protocol: cdk8splus22.Protocol_TCP,
+                    Port:       jsii.Number(lbPort),
+                    TargetPort: jsii.Number(appPort)}}})
+//...
+
+func main() {
+    app := cdk8s.NewApp(nil)
+
+    dynamodDB := NewDynamoDBChart(app, &quot;dynamodb&quot;, nil)
+    deployment := NewDeploymentChart(app, &quot;deployment&quot;, nil)
+
+    deployment.AddDependency(dynamodDB)
+
+    app.Synth()
+}
+</code></pre>
+<p>That's all I have for you in this blog!</p>
+<h2 id="dont-forget-to-delete-resources">Don't forget to delete resources..</h2>
+<pre><code class="language-bash"># delete DynamoDB table, Deployment, Service etc.
+kubectl delete -f dist/
+
+# to uninstall the ACK controller
+export SERVICE=dynamodb
+helm uninstall -n $ACK_SYSTEM_NAMESPACE ack-$SERVICE-controller
+
+# delete the EKS cluster. if created via eksctl:
+eksctl delete cluster --name &lt;enter name of eks cluster&gt;
+</code></pre>
+<h2 id="wrap-up">Wrap up..</h2>
+<p>AWS Controllers for Kubernetes help bridge the gap between traditional Kubernetes resources and AWS services by allowing you to manage both from a single control plane. In this blog you saw how to do this in the context of <code>DynamoDB</code> and a URL shortener application (deployed to Kubernetes). I encourage you to try out other AWS services that ACK supports - <a href="https://aws-controllers-k8s.github.io/community/docs/community/services/">here is a complete list</a>.</p>
+<p>The approach presented here will work well if just want to use <code>cdk8s</code>. However, depending on your requirements, there is another way this can done by bringing in <a href="https://docs.aws.amazon.com/cdk/v2/guide/home.html">AWS CDK</a> into the picture. I want to pause right here since this is something I might cover in a future blog post. </p>
+<p>Until then, Happy Building!</p>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.e5c33ebb.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.ba449ae6.min.js"></script>
+      
+    
+  </body>
+</html>
